@@ -88,8 +88,22 @@ async function run() {
         }
       }
       const result  = await ReviewCollection.updateMany(query,updateReview)
-    
-      console.log(result)
+      if(result.acknowledged){
+         res.send({
+        
+        status:true,
+        message:'Update operation is success',
+        
+      })
+      }
+      else{
+        res.send({
+          status:false,
+          message:'Update operation is failed'
+        })
+      }
+     
+      
     })
   } finally {
 
