@@ -64,7 +64,17 @@ async function run() {
       const findReview = ReviewCollection.find(query)
       const reviews = await findReview.toArray()
       res.send(reviews)
-      console.log(reviews)
+      // console.log(reviews)
+    })
+
+    app.get('/review',async(req,res) =>{
+      // const email = req.params.email
+      // console.log(req)
+      const query ={};
+      const result = ReviewCollection.find(query)
+      const getReviews =await result.toArray()
+      res.send(getReviews)
+      console.log(getReviews)
     })
   } finally {
 
