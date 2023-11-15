@@ -68,19 +68,17 @@ async function run() {
     })
     //review-update
     app.get('/review',async(req,res) =>{
-      // const email = req.params.email
-      // console.log(req)
       const query ={};
       const result = ReviewCollection.find(query)
       const getReviews =await result.toArray()
       res.send(getReviews)
-      console.log(getReviews)
+      // console.log(getReviews)
     })
     app.put('/review/:id',async(req,res)=>{
       const id = req.params.id;
       const query={_id:new ObjectId(id)}
       const body = req.body;
-      console.log(id,body)
+      // console.log(id,body)
       const updateReview = {
         $set:{
           reviewTitle:body.title,
@@ -104,6 +102,17 @@ async function run() {
       }
      
       
+    })
+    //delete 
+    app.delete('/review/:id',async(req,res)=>{
+        const id = req.params.id;
+        const query={_id:new ObjectId(id)}
+        const deleteItem = await ReviewCollection.deleteOne(query)
+        res.send({
+          status:true,
+          message:'Review is deleted successfully...'
+        })
+        console.log(id,deleteItem)
     })
   } finally {
 
