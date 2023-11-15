@@ -66,7 +66,7 @@ async function run() {
       res.send(reviews)
       // console.log(reviews)
     })
-
+    //review-update
     app.get('/review',async(req,res) =>{
       // const email = req.params.email
       // console.log(req)
@@ -75,6 +75,21 @@ async function run() {
       const getReviews =await result.toArray()
       res.send(getReviews)
       console.log(getReviews)
+    })
+    app.put('/review/:id',async(req,res)=>{
+      const id = req.params.id;
+      const query={_id:new ObjectId(id)}
+      const body = req.body;
+      console.log(id,body)
+      const updateReview = {
+        $set:{
+          reviewTitle:body.title,
+          reviewBody:body.body
+        }
+      }
+      const result  = await ReviewCollection.updateMany(query,updateReview)
+    
+      console.log(result)
     })
   } finally {
 
