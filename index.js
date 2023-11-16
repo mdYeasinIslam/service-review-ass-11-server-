@@ -28,6 +28,7 @@ async function run() {
   try {
     const ReviewCollection = client.db('Services-review').collection("Custome-review")
     const TouristCollection = client.db('Services-review').collection("Tour-Service")
+    const CustomService = client.db("Services-review").collection('custom-services')
     // const services =[
     //     {name:"A"},
     //     {name:'b'}
@@ -39,7 +40,7 @@ async function run() {
     app.get('/services',async(req,res)  =>{
         const query = {}
         const findData = TouristCollection.find(query)
-        const services = await findData.limit(3).toArray()
+        const services = await findData.toArray()
         res.send(services)
         // console.log(services)
     })
@@ -103,7 +104,7 @@ async function run() {
      
       
     })
-    //delete 
+    //review-delete 
     app.delete('/review/:id',async(req,res)=>{
         const id = req.params.id;
         const query={_id:new ObjectId(id)}
@@ -112,8 +113,23 @@ async function run() {
           status:true,
           message:'Review is deleted successfully...'
         })
-        console.log(id,deleteItem)
+        // console.log(id,deleteItem)
     })
+
+    //add-custom services
+    app.post('/custom-service',async(req,res)=>{
+      const body = req.body;
+      console.log(body)
+      const insertServiceInfo = await CustomService.insertOne(body)
+      res.send(insertServiceInfo)
+    })
+    app.get('/custom-service',async(req,res) =>{
+      const query ={}
+      const result = CustomService.find(query)
+      const services = await result.toArray()
+      res.send(services)
+    })
+    
   } finally {
 
   }
