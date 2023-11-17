@@ -29,12 +29,8 @@ async function run() {
     const ReviewCollection = client.db('Services-review').collection("Custome-review")
     const TouristCollection = client.db('Services-review').collection("Tour-Service")
     const CustomService = client.db("Services-review").collection('custom-services')
-    // const services =[
-    //     {name:"A"},
-    //     {name:'b'}
-    // ]
-    // const result = await TouristCollection2.insertMany(services)
-    // console.log(result)
+    const TouristInfo = client.db("Services-review").collection('tourist-Info')
+
 
     //services
     app.get('/services',async(req,res)  =>{
@@ -128,6 +124,31 @@ async function run() {
       const result = CustomService.find(query)
       const services = await result.toArray()
       res.send(services)
+    })
+    //find signle service
+    app.get('/custom-service/:id',async(req,res)=>{
+      const id = req.params.id;
+      // console.log(id)
+      const query = {_id:new ObjectId(id)}
+      const result = await CustomService.findOne(query)
+      res.send(result)
+    })
+
+    //checkout (tourist info)
+    app.post('/tourist-Info',async(req,res) =>{
+      const body = req.body;
+      console.log(body)
+      const inserInfo = await TouristInfo.insertOne(body)
+      res.send({
+        status:true,
+        message:"Your information is submitted successfully. Please wait for our TRIP-Day ,We will send message/email to you as soon as possible "
+      })
+    })
+    app.get('/tourist-Info',async(req,res) =>{
+      const query ={}
+      const result = TouristInfo.find(query)
+      const info = await result.toArray()
+      res.send(info)
     })
     
   } finally {
