@@ -40,10 +40,16 @@ async function run() {
     //services
     app.get("/services", async (req, res) => {
       const query = {};
+      const name = req.query.name;
       const findData = TouristCollection.find(query);
-      const services = await findData.toArray();
-      res.send(services);
-      // console.log(services)
+      if (name == "hasan") {
+        const services = await findData.limit(3).toArray();
+        res.send(services);
+      } else {
+        const services = await findData.toArray();
+        res.send(services);
+      } 
+      // console.log(req.query);
     });
     app.get("/services/:id", async (req, res) => {
       const id = req.params.id;
@@ -57,7 +63,9 @@ async function run() {
     app.post("/review", async (req, res) => {
       const reviewBody = req.body;
       const result = await ReviewCollection.insertOne(reviewBody);
-      res.send(result);
+      res.send({
+        result,status:'true',message:'Your review is submitted successfully'
+      });
     });
     app.get("/review/:id", async (req, res) => {
       const id = req.params.id;
@@ -167,6 +175,15 @@ async function run() {
       const info = await result.toArray();
       res.send(info);
     });
+    app.delete('/tourist-Info/:id',async(req,res) =>{
+      const id = req.params.id
+      // console.log(id)
+      const query = {placeId : id};
+      const deleteInfo  = await TouristInfo.deleteOne(query)
+      res.send({
+        deleteInfo,status:true,message:'Your Information id deleted successfully. Please purchase another one...'
+      })
+    })
   } finally {
   }
 }
