@@ -69,7 +69,7 @@ async function run() {
     });
     app.get("/review/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(id);
+      // console.log(id);
       const query = { placeId: id };
       const findReview = ReviewCollection.find(query);
       const reviews = await findReview.toArray();
@@ -123,7 +123,7 @@ async function run() {
     //add-custom services
     app.post("/custom-service", async (req, res) => {
       const body = req.body;
-      console.log(body);
+      // console.log(body);
       const insertServiceInfo = await CustomService.insertOne(body);
       res.send(insertServiceInfo);
     });
