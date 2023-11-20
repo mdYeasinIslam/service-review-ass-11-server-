@@ -141,6 +141,16 @@ async function run() {
       const result = await CustomService.findOne(query);
       res.send(result);
     });
+    //delete service
+    app.delete('/custom-service/:id',async(req,res)=>{
+      const id = req.params.id;
+      console.log(id)
+      const query ={_id :new ObjectId(id)}
+      const deleteService = await CustomService.deleteOne(query)
+      res.send({
+        deleteService,status:true,message:'Your service is deleted successfully.'
+      })
+    })
 
     //checkout (tourist info)
     app.post("/tourist-Info", async (req, res) => {
@@ -181,7 +191,7 @@ async function run() {
       const query = {placeId : id};
       const deleteInfo  = await TouristInfo.deleteOne(query)
       res.send({
-        deleteInfo,status:true,message:'Your Information id deleted successfully. Please purchase another one...'
+        deleteInfo,status:true,message:'Your Information is deleted successfully. Please purchase another one...'
       })
     })
   } finally {
@@ -190,7 +200,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("server is created");
+  res.send("server is running");
 });
 
 const port = process.env.PORT || 3000;
